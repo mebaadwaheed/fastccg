@@ -1,19 +1,20 @@
 import asyncio
 import os
 import fastccg
+import os
 
 from fastccg.models.gemini import gemini_flash_1_5
 
 # --- Configuration ---
-# IMPORTANT: Please replace "YOUR_MISTRAL_API_KEY" with your actual key
-API_KEY = "AIzaSyA-2hkj7Nv6GMIlGOjGe3P7MDcyvaBnGF0"
+# IMPORTANT: Please replace "API_KEY" with your actual key
+API_KEY = os.getenv("API_KEY")
 MODEL_CLASS = gemini_flash_1_5
 SAVE_PATH = "test_session.json"
 
 async def main():
     """Runs advanced tests for async, streaming, and save/load features."""
-    if API_KEY == "YOUR_MISTRAL_API_KEY":
-        print("Please set your Mistral API key in tests/advanced_test.py")
+    if API_KEY == "API_KEY":
+        print("Please set your API key in tests/advanced_test.py")
         return
 
     print("--- Initializing Model ---")
