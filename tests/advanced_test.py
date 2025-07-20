@@ -7,7 +7,7 @@ from fastccg.models.gemini import gemini_flash_1_5
 
 # --- Configuration ---
 # IMPORTANT: Please replace "API_KEY" with your actual key
-API_KEY = os.getenv("API_KEY")
+E_API_KEY = os.getenv("API_KEY")
 MODEL_CLASS = gemini_flash_1_5
 SAVE_PATH = "test_session.json"
 
@@ -18,8 +18,8 @@ async def main():
         return
 
     print("--- Initializing Model ---")
-    fastccg.add_gemini_key(API_KEY)
-    model = fastccg.init_model(MODEL_CLASS)
+    API_KEY = fastccg.add_gemini_key(E_API_KEY)
+    model = fastccg.init_model(MODEL_CLASS, api_key=API_KEY)
     model.sys_prompt("You are a helpful assistant that provides concise answers.")
     print(f"Model: {model.model_name}")
     print("-" * 20)
