@@ -9,8 +9,6 @@
 
 **FastCCG** is a simple, powerful, and developer-friendly Python library for interacting with Large Language Models (LLMs). It provides a clean, unified API to work with models from leading providers like OpenAI, Google, Anthropic, and Mistral, making it easy to build, test, and deploy AI-powered applications.
 
-## Project Site [Here](https://fastccg.vercel.app)
-
 ## 🚀 Key Features
 
 - **🔄 Unified API**: Switch between different LLM providers with minimal code changes
