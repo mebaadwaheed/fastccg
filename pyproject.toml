@@ -1,0 +1,51 @@
+[project]
+name = "fastccg"
+version = "0.1.0"
+description = "Fast, minimalist, multi-model terminal-based SDK for building, testing, and interacting with LLMs via cloud APIs."
+authors = [
+  { name="Your Name", email="you@example.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.8"
+keywords = ["llm", "openai", "gemini", "claude", "mistral", "terminal", "chatbot", "sdk", "ai"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11"
+]
+
+dependencies = [
+  "openai>=1.10",
+  "anthropic>=0.21",
+  "google-generativeai>=0.3",
+  "mistralai",
+  "httpx[http2]>=0.27.0,<0.29",
+  "rich>=13.3",
+  "typer[all]>=0.9",
+  "pydantic>=2.0"
+]
+
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "mypy",
+  "black",
+  "isort",
+  "build",
+  "twine"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["fastccg*"]

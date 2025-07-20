@@ -1,0 +1,5 @@
+dist/
+.env
+
+fastccg.egg-info
+__pycache__
