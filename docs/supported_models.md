@@ -70,6 +70,20 @@ model = fastccg.init_model(mistral_tiny, api_key=api_key)
 
 ---
 
-## Anthropic (Claude)
+## Claude
 
-Support for Anthropic's Claude models is planned but not yet fully integrated or tested. The `claude.py` module exists but is not currently used in the test suite.
+-   **Provider Name**: `Claude`
+-   **API Key Function**: `fastccg.add_claude_key()`
+
+| Class Name         | Model ID                    |
+| ------------------ | --------------------------- |
+| `claude_3_sonnet`  | `claude-3-sonnet-20240229`  |
+
+**Example:**
+```python
+import fastccg
+from fastccg.models.claude import claude_3_sonnet
+
+api_key = fastccg.add_claude_key("sk-ant-...")
+model = fastccg.init_model(claude_3_sonnet, api_key=api_key)
+```

@@ -1,0 +1,7 @@
+Version 0.1.0:
+- Added Documentation
+- Built the initial library
+- Added Support for OpenAI, Gemini, Claude, and Mistral
+- Added Support for CLI and Terminal
+- Added Support for Streaming
+# Contributors: @mebaadwaheed
