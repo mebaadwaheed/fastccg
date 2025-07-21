@@ -1,3 +1,9 @@
+Version 0.2.0:
+- Added FCVS CLI Tool
+- Added Support for Basic Embedding and RAG
+- Added Support for Advanced Embedding and RAG
+# Contributors: @mebaadwaheed
+
 Version 0.1.0:
 - Added Documentation
 - Built the initial library

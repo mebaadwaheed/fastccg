@@ -16,6 +16,10 @@ This documentation is designed to help you get up and running as quickly as poss
 
 - **[Quick Start](./quick_start.md)**: The fastest way to get your first response from a model.
 - **[CLI Usage](./cli_usage.md)**: Learn how to use the powerful command-line interface to chat with models directly from your terminal.
+- **[FCVS CLI Tool](./fcvs_cli.md)**: Learn how to use the `fcvs` command-line tool to inspect, validate, and convert `.fcvs` files.
 - **[Advanced Usage](./advanced_usage.md)**: Dive into asynchronous operations, streaming, and session management.
+- **[Basic Embedding and RAG](./embedding_and_rag.md)**: Learn how to use the basic RAG and embedding system.
+- **[Advanced Embedding](./advanced_embedding.md)**: Learn how to use the advanced embedding system.
+- **[Advanced RAG](./advanced_rag.md)**: Learn how to use the advanced RAG system.
 - **[API Reference](./api_reference.md)**: A detailed look at all the available functions and classes.
 - **[Supported Models](./supported_models.md)**: A complete list of all the models you can use with FastCCG.

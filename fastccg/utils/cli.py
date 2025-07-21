@@ -6,7 +6,8 @@ from rich.table import Table
 import inspect
 
 import fastccg
-from fastccg.models import gpt, gemini, claude, mistral
+from fastccg.models import gpt, gemini, claude, mistral, mock
+from fastccg.embedding import openai as openai_embedding, mock as mock_embedding
 
 # Initialize Typer app and Rich console
 app = typer.Typer(
@@ -19,7 +20,7 @@ console = Console()
 def get_all_model_classes():
     """Dynamically get all model classes from the modules."""
     all_models = []
-    for module in [gpt, gemini, claude, mistral]:
+    for module in [gpt, gemini, claude, mistral, mock]:
         for name, obj in inspect.getmembers(module):
             if inspect.isclass(obj) and issubclass(obj, fastccg.ModelBase) and not name.startswith('_'):
                 all_models.append({
@@ -29,8 +30,21 @@ def get_all_model_classes():
                 })
     return all_models
 
-@app.command()
-def models():
+def get_all_embedding_classes():
+    """Dynamically get all embedding model classes from the modules."""
+    all_embedding_models = []
+    for module in [openai_embedding, mock_embedding]:
+        for name, obj in inspect.getmembers(module):
+            if inspect.isclass(obj) and issubclass(obj, fastccg.EmbeddingBase) and not name.startswith('_'):
+                all_embedding_models.append({
+                    "alias": name,
+                    "provider": obj.provider,
+                    "class": obj
+                })
+    return all_embedding_models
+
+@app.command(name="models")
+def list_models():
     """
     List all available model presets.
     """
@@ -45,10 +59,32 @@ def models():
 
     console.print(table)
 
+@app.command(name="list-embeddings")
+def list_embeddings():
+    """
+    List all available embedding model presets.
+    """
+    table = Table(title="FastCCG Supported Embedding Models")
+    table.add_column("Alias", style="cyan", no_wrap=True)
+    table.add_column("Provider", style="magenta")
+
+    embedding_classes = get_all_embedding_classes()
+    
+    for model_info in sorted(embedding_classes, key=lambda x: (x['provider'], x['alias'])):
+        table.add_row(model_info['alias'], model_info['provider'].capitalize())
+
+    console.print(table)
 
 def get_model_class_by_alias(alias: str):
     """Get a model class by its alias."""
     for model_info in get_all_model_classes():
+        if model_info['alias'].lower() == alias.lower():
+            return model_info['class']
+    return None
+
+def get_embedding_class_by_alias(alias: str):
+    """Get an embedding model class by its alias."""
+    for model_info in get_all_embedding_classes():
         if model_info['alias'].lower() == alias.lower():
             return model_info['class']
     return None
@@ -70,11 +106,16 @@ def ask(
         raise typer.Exit(code=1)
 
     provider = model_class.provider
-    api_key = key or os.getenv(f"{provider.upper()}_API_KEY")
-
-    if not api_key:
-        console.print(f"[bold red]Error:[/] API key for {provider.capitalize()} not found. Pass it with --key or set the {provider.upper()}_API_KEY environment variable.")
-        raise typer.Exit(code=1)
+    
+    # Handle API key
+    if provider == "mock":
+        fastccg.add_mock_key()
+        api_key = "mock_key"
+    else:
+        api_key = key or os.getenv(f"{provider.upper()}_API_KEY")
+        if not api_key:
+            console.print(f"[bold red]Error:[/] API key for {provider.capitalize()} not found. Pass it with --key or set the {provider.upper()}_API_KEY environment variable.")
+            raise typer.Exit(code=1)
 
     try:
         model_instance = fastccg.init_model(model_class, api_key=api_key)
@@ -87,6 +128,45 @@ def ask(
             response = model_instance.ask(prompt)
         
         console.print(f"[bold green]AI Response:[/] {response.content}")
+
+    except Exception as e:
+        console.print(f"[bold red]An error occurred:[/] {e}")
+        raise typer.Exit(code=1)
+
+@app.command()
+def embed(
+    text: str = typer.Argument(..., help="The text to embed."),
+    model: str = typer.Option("text_embedding_3_small", "--model", "-m", help="Embedding model alias to use."),
+    key: str = typer.Option(None, "--key", "-k", help="API key. If not provided, checks environment variables."),
+):
+    """
+    Generate an embedding for a given text.
+    """
+    model_class = get_embedding_class_by_alias(model)
+    if not model_class:
+        console.print(f"[bold red]Error:[/] Embedding model alias '{model}' not found. Use 'fastccg list-embeddings' to see available models.")
+        raise typer.Exit(code=1)
+
+    provider = model_class.provider
+    
+    # Handle API key
+    if provider == "mock":
+        fastccg.add_mock_key()
+        api_key = "mock_key"
+    else:
+        api_key = key or os.getenv(f"{provider.upper()}_API_KEY")
+        if not api_key:
+            console.print(f"[bold red]Error:[/] API key for {provider.capitalize()} not found. Pass it with --key or set the {provider.upper()}_API_KEY environment variable.")
+            raise typer.Exit(code=1)
+
+    try:
+        embedding_model = fastccg.init_embedding(model_class, api_key=api_key)
+
+        with console.status("[bold green]Generating embedding..."):
+            embedding = asyncio.run(embedding_model.embed(text))
+        
+        console.print(f"[bold green]Embedding Vector (first 10 dims):[/] {embedding[0][:10]}...")
+        console.print(f"[bold green]Total Dimensions:[/] {len(embedding[0])}")
 
     except Exception as e:
         console.print(f"[bold red]An error occurred:[/] {e}")
@@ -162,5 +242,3 @@ def chat(
 
 if __name__ == "__main__":
     app()
-
-
