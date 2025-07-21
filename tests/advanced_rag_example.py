@@ -77,7 +77,7 @@ async def main():
     print(f"\n[bold green]Loaded RAG Answer:[/] {loaded_response.content}")
 
     # Clean up the created file
-    # os.remove(save_path)
+    os.remove(save_path)
 
 if __name__ == "__main__":
     asyncio.run(main())

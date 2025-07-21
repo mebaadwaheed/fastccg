@@ -13,6 +13,8 @@
 
 - **🔄 Unified API**: Switch between different LLM providers with minimal code changes
 - **⚡ Async Support**: Built-in asynchronous operations for high-performance applications
+- **🧠 Retrieval-Augmented Generation (RAG)**: Build powerful Q&A systems over your own documents
+- **✨ Text Embedding**: Convert text into vector representations for semantic search
 - **🌊 Streaming**: Real-time response streaming for interactive experiences
 - **💾 Session Management**: Save and restore conversation history
 - **🖥️ CLI Interface**: Powerful command-line tools for quick testing and interaction
@@ -60,10 +62,47 @@ FastCCG comes with a powerful CLI for quick interactions:
 fastccg models
 
 # Ask a single question
-fastccg ask "What is the capital of France?" --model gpt-4o
+fastccg ask "What is the capital of France?" --model gpt_4o
 
 # Start an interactive chat session
-fastccg chat --model gpt-4o
+fastccg chat --model gpt_4o
+```
+
+## 🧠 Retrieval-Augmented Generation (RAG)
+
+Build a powerful question-answering system over your own documents with just a few lines of code. FastCCG handles the complexity of embedding, indexing, and context retrieval for you.
+
+```python
+import asyncio
+import fastccg
+from fastccg.models.gpt import gpt_4o
+from fastccg.embedding import OpenAIEmbedding
+from fastccg.rag import RAGModel
+
+# 1. Setup API keys and models
+api_key = fastccg.add_openai_key("sk-...")
+llm = fastccg.init_model(gpt_4o, api_key=api_key)
+embedder = OpenAIEmbedding(api_key=api_key)
+
+# 2. Create and configure the RAG model
+rag = RAGModel(llm=llm, embedder=embedder)
+
+# 3. Index your documents
+documents = {
+    "doc1": "The sky is blue during a clear day.",
+    "doc2": "The grass in the park is typically green."
+}
+
+# 4. Ask a question related to your documents
+async def main():
+    response = await rag.ask_async("What color is the sky?")
+    print(response.content)
+    # Expected output will be based on the indexed context
+
+asyncio.run(main())
+
+# 5. Save your knowledge base for later use
+rag.save("my_knowledge.fcvs", pretty_print=True)
 ```
 
 ## 🔄 Advanced Features
@@ -108,7 +147,8 @@ Comprehensive documentation is available in the [`docs/`](./docs/) directory:
 
 - **[Quick Start Guide](./docs/quick_start.md)** - Get up and running in minutes
 - **[CLI Usage](./docs/cli_usage.md)** - Command-line interface guide
-- **[Advanced Usage](./docs/advanced_usage.md)** - Async, streaming, and session management
+- **[FCVS CLI Tool](./docs/fcvs_cli.md)** - Manage `.fcvs` vector store files
+- **[Embedding and RAG](./docs/embedding_and_rag.md)** - Guides for embedding and RAG
 - **[API Reference](./docs/api_reference.md)** - Complete API documentation
 - **[Supported Models](./docs/supported_models.md)** - All available models and providers
 
