@@ -76,7 +76,7 @@ Build a powerful question-answering system over your own documents with just a f
 import asyncio
 import fastccg
 from fastccg.models.gpt import gpt_4o
-from fastccg.embedding import OpenAIEmbedding
+from fastccg.embedding.openai import text_embedding_3_small
 from fastccg.rag import RAGModel
 
 # 1. Setup API keys and models

@@ -1,6 +1,6 @@
 [project]
 name = "fastccg"
-version = "0.2.0"
+version = "0.2.0.post1"
 description = "Fast, minimalist, multi-model terminal-based SDK for building, testing, and interacting with LLMs via cloud APIs."
 authors = [
   { name="Your Name", email="you@example.com" }
