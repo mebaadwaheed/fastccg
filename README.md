@@ -82,7 +82,7 @@ from fastccg.rag import RAGModel
 # 1. Setup API keys and models
 api_key = fastccg.add_openai_key("sk-...")
 llm = fastccg.init_model(gpt_4o, api_key=api_key)
-embedder = OpenAIEmbedding(api_key=api_key)
+embedder = text_embedding_3_small(api_key=api_key)
 
 # 2. Create and configure the RAG model
 rag = RAGModel(llm=llm, embedder=embedder)
