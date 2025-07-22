@@ -103,6 +103,31 @@ class RAGModel:
         response = await self.llm.ask_async(augmented_prompt)
         return response
 
+    def enable_memory(
+        self, short_term: bool = True, long_term: bool = False, recent_history_turns: int = 5
+    ) -> "RAGModel":
+        """
+        Enable or disable memory features on the underlying language model.
+
+        Args:
+            short_term: If True, keep history within the current session.
+            long_term: If True, persist history to a file for future sessions.
+            recent_history_turns: Number of turns to load from long-term memory.
+        """
+        self.llm.enable_memory(
+            short_term=short_term,
+            long_term=long_term,
+            recent_history_turns=recent_history_turns,
+        )
+        return self
+
+    def reset(self) -> "RAGModel":
+        """
+        Resets the underlying language model's conversation history.
+        """
+        self.llm.reset()
+        return self
+
     def save(self, filepath: str, pretty_print: bool = False) -> None:
         """
         Saves the underlying vector store to a file.

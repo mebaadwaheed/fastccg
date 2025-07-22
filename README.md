@@ -141,6 +141,28 @@ model.save("my_session.json")
 loaded_model = fastccg.load_model("my_session.json", api_key=api_key)
 ```
 
+### 🧠 Built-in Memory & Conversation Tracking
+
+FastCCG can automatically manage conversation history for you, including persisting it for long-term use across sessions.
+
+```python
+api = fastccg.add_mock_key("akdosad")
+model = fastccg.init_model(MockModel, api_key=api)
+
+# Enable short-term (session) and long-term (file-based) memory
+model.enable_memory(short_term=True, long_term=True)
+
+# The model now remembers the context of the conversation
+model.ask("Who is the president of Afghanistan?")
+response = model.ask("And what was his last speech about?") # This question has context
+
+print(response.content)
+```
+
+- **Short-Term Memory**: Keeps track of the conversation within the current Python session.
+- **Long-Term Memory**: Automatically saves the conversation to a `.fcvs/memory.jsonl` file. When a new session starts with `long_term=True`, it loads the recent history, allowing the model to have context from previous interactions.
+- **RAG Support**: This feature is also available on the `RAGModel`, allowing for contextual, multi-turn conversations in your RAG applications.
+
 ## 📚 Documentation
 
 Comprehensive documentation is available in the [`docs/`](./docs/) directory:

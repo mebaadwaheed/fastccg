@@ -23,7 +23,7 @@ class _OpenAIModel(ModelBase):
         messages = []
         if self._sys_prompt:
             messages.append({"role": "system", "content": self._sys_prompt.content})
-        for p in self.history:
+        for p in self.memory.history:
             messages.append({"role": p.role, "content": p.content})
 
         params = {"model": self.model_name, "messages": messages}
@@ -37,11 +37,9 @@ class _OpenAIModel(ModelBase):
         return asyncio.run(self._ask_async(prompt))
 
     async def _ask_async(self, prompt: str) -> ModelResponse:
-        self.append_prompt(prompt)
         try:
             response = await self.client.chat.completions.create(**self._build_params())
             content = response.choices[0].message.content or ""
-            self.history.append(ModelPrompt(role="assistant", content=content))
             tokens_used = response.usage.total_tokens if response.usage else 0
             return ModelResponse(
                 content=content,
@@ -59,15 +57,13 @@ class _OpenAIModel(ModelBase):
             raise APIRequestFailed(f"Unexpected error: {str(e)}")
 
     async def _ask_stream(self, prompt: str) -> AsyncGenerator[ModelResponse, None]:
-        self.append_prompt(prompt)
         try:
-            stream = await self.client.chat.completions.create(**self._build_params(), stream=True)
-            full_content = ""
+            stream = await self.client.chat.completions.create(
+                **self._build_params(), stream=True
+            )
             async for chunk in stream:
                 content = chunk.choices[0].delta.content or ""
-                full_content += content
                 yield ModelResponse(content=content, provider=self.provider, raw=chunk)
-            self.history.append(ModelPrompt(role="assistant", content=full_content))
         except RateLimitError:
             raise QuotaExceeded()
         except NotFoundError:
