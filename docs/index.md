@@ -1,8 +1,10 @@
 # Welcome to FastCCG
 
-FastCCG is a Python library designed to provide a simple, unified, and powerful interface for interacting with Large Language Models (LLMs) from various providers.
+FastCCG is a Python library for building AI applications with Large Language Models — across OpenAI, Google, Mistral, and more — using a consistent and powerful interface.
 
 Whether you're building a simple script, a complex application, or just want a better way to chat with different models from your terminal, FastCCG has you covered.
+
+`pip install fastccg`
 
 ## Our Philosophy
 

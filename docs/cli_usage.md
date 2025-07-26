@@ -19,22 +19,22 @@ This will print a formatted table of all supported models, along with their prov
 The `ask` command allows you to send a single, one-shot prompt to any model. This is useful for quick questions or testing a prompt.
 
 ```bash
-fastccg ask "What is the capital of France?" --model gpt-4o --api-key "sk-...
+fastccg ask "What is the capital of France?" --model gpt_4o --api-key "sk-...
 ```
 
 ### Options
 
 The `ask` command comes with several options to customize the request:
 
--   `--model` / `-m`: (Required) The ID of the model you want to use (e.g., `gpt-4o`, `gemini-1.5-pro-latest`).
--   `--api-key`: Your API key for the provider. If not provided, the CLI will look for an environment variable (e.g., `OPENAI_API_KEY`).
+-   `--model` / `-m`: (Required) The ID of the model you want to use (e.g., `gpt_4o`, `gemini_1_5_pro`).
+-   `--api-key`: Your API key for the provider. If not provided, the CLI will look for an environment variable (e g., `OPENAI_API_KEY`).
 -   `--temperature`: Set the creativity of the response (e.g., `0.8`).
 -   `--max-tokens`: Limit the length of the response.
 
 **Example with options:**
 
 ```bash
-fastccg ask "Tell me a short story." -m mistral-small --temperature 0.9 --max-tokens 100
+fastccg ask "Tell me a short story." -m mistral_small --temperature 0.9 --max-tokens 100
 ```
 
 ## 3. Interactive Chat (`chat`)

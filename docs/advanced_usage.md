@@ -90,4 +90,4 @@ print(response.content)
 
 ---
 
-For a detailed breakdown of every available function, see the **[API Reference](./api_reference.md)**.
+To see basic RAG and Embedding Features, dive into **[Basic RAG and Embedding](./embedding_and_rag.md)**.
