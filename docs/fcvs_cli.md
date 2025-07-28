@@ -86,3 +86,5 @@ Success: File converted and saved to 'my_knowledge.json'.
 ```
 
 This will create a new file named `my_knowledge.json` in the same directory.
+
+To see the API Reference you can go to the [API Reference Guide](./api_reference.md)

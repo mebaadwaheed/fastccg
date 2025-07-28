@@ -91,3 +91,5 @@ fastccg embed "This is a test." --model MockEmbedding
 # Using a production model (requires API key to be set in the environment)
 fastccg embed "This is a test." --model text_embedding_3_small
 ```
+
+To see how to use .fcvs and its cli go to [The .fcvs Guide](./fcvs_cli.md)

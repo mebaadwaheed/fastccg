@@ -158,3 +158,5 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+
+To see advanced embedding you can dive into it at the [Advanced Embedding Guide](./advanced_embedding.md)
